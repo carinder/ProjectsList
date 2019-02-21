@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\priorities;
+use DB;
+
 use Illuminate\Http\Request;
 
 class PrioritiesController extends Controller
@@ -14,16 +16,24 @@ class PrioritiesController extends Controller
      */
     public function index()
     {
-        $array = [];
+        //$array = [];
+        //$priorities = priorities::find(1);
+        //foreach($priorities->projects as $project){
+        //    array_push($array,$project);
+        //}        
+        //return $array;
 
+        //$priorities=DB::table('priorities')->pluck('projects_id');
 
-        $priorities = priorities::find(1);
-        foreach($priorities->projects as $project){
-            array_push($array,$project);
-        }
+        //$priorities=priorities::all();
+        //$array=[];
+        //foreach ($priorities as $project){
+        //    array_push($array,$project->projects);
+        //}
+        //return $priorities;
 
-
-        return $array;
+        $priorities=DB::table('priorities_projects')->where('priorities_id','1')->orWhere('priorities_id','2')->orWhere('priorities_id','3')->orWhere('priorities_id','4')->get();
+        return $priorities;
     }
 
     /**

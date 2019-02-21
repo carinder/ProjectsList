@@ -2,6 +2,7 @@
     <div class=".container-fluid">
         <div class="row">
             <div class="col">
+                <!-- Navigation Bar -->
                 <button @click="showAll()" :class="{btn : 1, 'btn-outline-success' : allVar, 'btn-outline-dark' : !allVar}">All Projects</button>
                 <button @click="incomplete()" :class="{btn : 1, 'btn-outline-success' : incVar, 'btn-outline-dark' : !incVar}">Upcoming</button>
                 <button @click="complete()" :class="{btn : 1, 'btn-outline-success' : comVar, 'btn-outline-dark' : !comVar}">Completed</button>
@@ -9,48 +10,48 @@
                 <button @click="important()" :class="{btn : 1, 'btn-outline-success' : impVar, 'btn-outline-dark' : !impVar}">Important</button>
                 <button @click="ignored()" :class="{btn : 1, 'btn-outline-success' : ignVar, 'btn-outline-dark' : !ignVar}">Ignored</button>
                 <button @click="optional()" :class="{btn : 1, 'btn-outline-success' : optVar, 'btn-outline-dark' : !optVar}">Optional</button>
-            
+
+                <!-- Sort tasks by priority -->
+
                 <div v-for="project in projects">
                     <li v-if="allVar === 1">
                         {{project.name}}
                     </li>
                 </div>
 
-                <div v-for="project in priorities">
-                    <li v-if="urgVar === 1">
-                        {{project.name}}
-                    </li>
-                </div>
 
-<!--
-                    <li v-if="incVar === 1">
-                        {{project.name}}
-                    </li>
-
-                    <li v-if="incVar === 1">
+<!--                    <li v-if="incVar === 1">
                         {{project.name}}
                     </li>
 
                     <li v-if="comVar === 1">
                         {{project.name}}
                     </li>
-
-                    <li v-if="urgVar === 1">
-                        {{project.name}}
-                    </li>
-                    
-                    <li v-if="impVar === 1">
-                        {{project.name}}
-                    </li>
-
-                    <li v-if="ignVar === 1">
-                        {{project.name}}
-                    </li>
-
-                    <li v-if="optVar === 1">
-                        {{project.name}}
-                    </li>
 -->
+                    <div v-for="project in priorities">
+                        <li v-if="urgVar === 1 && project.priorities_id === 1">
+                            {{projects.find(proj => proj.id === project.projects_id).name}}
+                        </li>
+                    </div>
+                   
+                    <div v-for="project in priorities">
+                        <li v-if="impVar === 1 && project.priorities_id === 2">
+                            {{projects.find(proj => proj.id === project.projects_id).name}}
+                        </li>
+                    </div>
+
+                    <div v-for="project in priorities">
+                        <li v-if="ignVar === 1 && project.priorities_id === 3">
+                            {{projects.find(proj => proj.id === project.projects_id).name}}
+                        </li>
+                    </div>
+
+                    <div v-for="project in priorities">
+                        <li v-if="optVar === 1 && project.priorities_id === 4">
+                            {{projects.find(proj => proj.id === project.projects_id).name}}
+                        </li>
+                    </div>
+
             </div>
         </div>
     </div>
@@ -60,6 +61,7 @@
 export default {
         mounted() {
             axios.get('/projects').then(response => this.projects = response.data);
+            axios.get('/priorities').then(response => this.priorities = response.data);
         },
         data(){
             return{
@@ -88,8 +90,7 @@ export default {
                 this.sortWipe();
                 this.comVar=1;
             },
-            urgent(){
-                axios.get('/priorities').then(response => this.priorities = response.data);
+            urgent(){                
                 this.sortWipe();
                 this.urgVar=1;
             },
